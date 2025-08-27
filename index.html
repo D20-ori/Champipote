@@ -16,13 +16,7 @@
             --mushroom-white: #FAEBD7;
         }
 
-        .dark {
-            --mushroom-brown-light: #3A2E1A;
-            --mushroom-brown: #2D1B0E;
-            --mushroom-brown-dark: #1A0F07;
-            --mushroom-cream: #2A241E;
-            --mushroom-white: #1F1B17;
-        }
+        
 
         body {
             background: linear-gradient(135deg, var(--mushroom-cream) 0%, var(--mushroom-white) 100%);
@@ -56,10 +50,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .dark .mushroom-card {
-            background: rgba(42, 36, 30, 0.9);
-            border-color: var(--mushroom-brown);
-        }
+        
 
         .mushroom-btn {
             background: linear-gradient(135deg, var(--mushroom-brown) 0%, var(--mushroom-brown-dark) 100%);
@@ -107,10 +98,7 @@
             position: relative;
         }
 
-        .dark .month-card {
-            background: rgba(42, 36, 30, 0.9);
-            border-color: var(--mushroom-brown);
-        }
+        
 
         .month-header {
             display: flex;
@@ -158,9 +146,7 @@
             transition: all 0.2s;
         }
 
-        .dark .day-cell {
-            background: rgba(0, 0, 0, 0.2);
-        }
+        
 
         .day-cell:hover {
             background: rgba(139, 69, 19, 0.1);
@@ -317,6 +303,20 @@
             background: rgba(245, 245, 220, 0.7);
         }
 
+        .photo-date-badge {
+            position: absolute;
+            right: 6px;
+            bottom: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 0.75rem;
+            line-height: 1;
+            padding: 4px 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            user-select: none;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -339,10 +339,7 @@
             overflow-y: auto;
         }
 
-        .dark .modal-content {
-            background: var(--mushroom-cream);
-            color: white;
-        }
+        
 
         .page {
             display: none;
@@ -357,44 +354,13 @@
             color: var(--mushroom-white);
         }
 
-        .toggle-switch {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: var(--mushroom-brown-light);
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.3s;
-        }
-
-        .dark .toggle-switch {
-            background: var(--mushroom-brown);
-        }
-
-        .dark .toggle-switch::after {
-            transform: translateX(30px);
-        }
+        
 
         table {
             background: rgba(245, 245, 220, 0.9);
         }
 
-        .dark table {
-            background: rgba(42, 36, 30, 0.9);
-            color: white;
-        }
+        
 
         th {
             background: var(--mushroom-brown);
@@ -410,9 +376,7 @@
             background: rgba(139, 69, 19, 0.05);
         }
 
-        .dark tr:nth-child(even) {
-            background: rgba(139, 69, 19, 0.1);
-        }
+        
 
         @media print {
             body {
@@ -528,11 +492,7 @@
             z-index: 2;
         }
 
-        .dark .weight-display {
-            background: rgba(0, 0, 0, 0.8);
-            color: var(--mushroom-white);
-            border-color: var(--mushroom-brown);
-        }
+        
     </style>
 </head>
 <body class="font-sans">
@@ -557,11 +517,6 @@
                 <button class="nav-btn mushroom-btn px-4 py-2 rounded" onclick="showPage('settings')">
                     <i class="fas fa-cog mr-2"></i>Réglages
                 </button>
-                
-                <div class="toggle-switch ml-4" onclick="toggleDarkMode()" title="Mode sombre">
-                    <i class="fas fa-moon absolute top-1 left-1 text-sm"></i>
-                    <i class="fas fa-sun absolute top-1 right-1 text-sm"></i>
-                </div>
             </nav>
         </div>
     </header>
@@ -1117,7 +1072,6 @@
          let currentPage = 'dashboard';
          let currentYear = new Date().getFullYear();
          let currentMonth = 0;
-         let isDarkMode = false;
          let sortColumn = 'date'; // Colonne actuellement triée (par défaut: date)
          let sortDirection = 'desc'; // Direction du tri (par défaut: décroissant pour avoir les plus récentes en haut)
          let charts = {}; // Pour stocker les instances de graphiques
@@ -1219,12 +1173,11 @@
              
              showPage('dashboard');
              populateSettings();
-             loadDarkMode();
-            
-            // Sauvegarder les données initiales si elles n'existent pas
-            if (!localStorage.getItem('mushroomHarvestData')) {
-                saveData();
-            }
+             
+           // Sauvegarder les données initiales si elles n'existent pas
+           if (!localStorage.getItem('mushroomHarvestData')) {
+               saveData();
+           }
             
                          // Attendre que tous les éléments soient chargés avant de mettre à jour le dashboard
              function initializeDashboard() {
@@ -1319,23 +1272,7 @@
              if (pageId === 'harvests') populateHarvestsTable();
          }
 
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark', isDarkMode);
-            localStorage.setItem('darkMode', isDarkMode);
-        }
-
-        function loadDarkMode() {
-            const saved = localStorage.getItem('darkMode');
-            if (saved === 'true') {
-                isDarkMode = true;
-                document.body.classList.add('dark');
-            } else {
-                isDarkMode = false;
-                document.body.classList.remove('dark');
-                if (saved === null) localStorage.setItem('darkMode', 'false');
-            }
-        }
+        
 
         // Year management
                  function changeYear() {
@@ -3683,12 +3620,24 @@
             input.onchange = function(e) {
                 const file = e.target.files[0];
                 if (file) {
+                    // Demander une date (JJ/MM) optionnelle lors de l'upload
+                    let dateInput = prompt('Date de la photo (JJ/MM) — laissez vide pour plus tard :', '');
+                    dateInput = (dateInput || '').trim();
+                    const isValidDate = /^([0-2][0-9]|3[01])\/(0[1-9]|1[0-2])$/.test(dateInput);
+                    if (dateInput && !isValidDate) {
+                        alert('Format invalide. Utilisez JJ/MM, par ex. 15/09.');
+                        dateInput = '';
+                    }
+
                     compressAndStoreImage(file, 40, (base64) => {
                         // Initialiser l'année si elle n'existe pas
                         if (!appData.dashboardPhotos[currentYear]) {
                             appData.dashboardPhotos[currentYear] = ['', '', '', '', ''];
                         }
-                        appData.dashboardPhotos[currentYear][index] = base64;
+                        // Stocker sous forme d'objet { src, date }
+                        appData.dashboardPhotos[currentYear][index] = dateInput
+                            ? { src: base64, date: dateInput }
+                            : { src: base64 };
                         loadDashboardPhotos();
                         saveData();
                     });
@@ -3715,8 +3664,16 @@
                 
                 if (!container) continue; // Skip if container doesn't exist
                 
-                if (appData.dashboardPhotos[currentYear][i] && appData.dashboardPhotos[currentYear][i].trim() !== '') {
-                    container.innerHTML = `<img src="${appData.dashboardPhotos[currentYear][i]}" class="w-full h-full object-cover rounded" alt="Photo ${i+1}">`;
+                const slot = appData.dashboardPhotos[currentYear][i];
+                const hasPhoto = (typeof slot === 'string' && slot.trim() !== '') || (slot && typeof slot === 'object' && (slot.src || slot.url || slot.photo));
+                if (hasPhoto) {
+                    const src = typeof slot === 'string' ? slot : (slot.src || slot.url || slot.photo || '');
+                    const label = (slot && typeof slot === 'object' && slot.date && String(slot.date).trim() !== '') ? slot.date : 'Date';
+                    container.innerHTML = `
+                        <div class="w-full h-full relative">
+                            <img src="${src}" class="w-full h-full object-cover rounded" alt="Photo ${i+1}">
+                            <div class="photo-date-badge" onclick="editDashboardPhotoDate(${i}); event.stopPropagation();">${label}</div>
+                        </div>`;
                     if (removeButton) {
                         removeButton.style.display = 'block';
                     }
@@ -3727,6 +3684,38 @@
                     }
                 }
             }
+        }
+
+        function editDashboardPhotoDate(index) {
+            // S'assurer que la structure existe
+            if (!appData.dashboardPhotos[currentYear]) {
+                appData.dashboardPhotos[currentYear] = ['', '', '', '', ''];
+            }
+            const slot = appData.dashboardPhotos[currentYear][index];
+            // Éditer uniquement s'il y a une photo
+            const hasPhoto = (typeof slot === 'string' && slot.trim() !== '') || (slot && typeof slot === 'object' && (slot.src || slot.url || slot.photo));
+            if (!hasPhoto) return;
+
+            const currentLabel = (slot && typeof slot === 'object' && slot.date) ? slot.date : '';
+            let newDate = prompt('Modifier la date (JJ/MM) — laisser vide pour aucun libellé :', currentLabel || '');
+            if (newDate === null) return; // annulé
+            newDate = newDate.trim();
+            const isValidDate = newDate === '' || /^([0-2][0-9]|3[01])\/(0[1-9]|1[0-2])$/.test(newDate);
+            if (!isValidDate) {
+                alert('Format invalide. Utilisez JJ/MM, par ex. 15/09.');
+                return;
+            }
+
+            // Normaliser le slot en objet
+            let src = '';
+            if (typeof slot === 'string') {
+                src = slot;
+            } else if (slot && typeof slot === 'object') {
+                src = slot.src || slot.url || slot.photo || '';
+            }
+            appData.dashboardPhotos[currentYear][index] = newDate ? { src, date: newDate } : { src };
+            saveData();
+            loadDashboardPhotos();
         }
 
         function removeDashboardPhoto(index) {
@@ -3825,7 +3814,10 @@
             const data = {
                 ...appData,
                 exportDate: new Date().toISOString(),
-                version: '1.0'
+                version: '1.1',
+                // Inclure aussi les données auxiliaires persistées en dehors d'appData
+                displayedMonths: Array.isArray(displayedMonths) ? [...displayedMonths] : [],
+                customVarietyColors: { ...customVarietyColors }
             };
             
             // Format de date pour le nom de fichier : aaaa-mm-jj
@@ -3867,15 +3859,48 @@
                     const data = JSON.parse(e.target.result);
                     
                     if (confirm('Cette action remplacera les données existantes. Êtes-vous sûr ?')) {
-                        // Merge imported data
+                        // Fusionner les données importées avec migration si nécessaire
                         if (data.years) {
                             Object.assign(appData.years, data.years);
                         }
                         if (data.settings) {
                             Object.assign(appData.settings, data.settings);
                         }
+                        // Gérer dashboardPhotos: accepté comme tableau (ancien), objet simple {year: [..]},
+                        // ou objet avec slots { src, date }
                         if (data.dashboardPhotos) {
-                            appData.dashboardPhotos = data.dashboardPhotos;
+                            if (Array.isArray(data.dashboardPhotos)) {
+                                // Ancien format: tableau global (migré vers année courante)
+                                const y = new Date().getFullYear();
+                                appData.dashboardPhotos[y] = data.dashboardPhotos.map(p =>
+                                    typeof p === 'string' ? (p ? { src: p } : '') : p
+                                );
+                                while (appData.dashboardPhotos[y].length < 5) appData.dashboardPhotos[y].push('');
+                                appData.dashboardPhotos[y] = appData.dashboardPhotos[y].slice(0, 5);
+                            } else if (typeof data.dashboardPhotos === 'object') {
+                                // Nouvelle structure possible: copier profondément année par année
+                                Object.keys(data.dashboardPhotos).forEach(y => {
+                                    const arr = data.dashboardPhotos[y] || [];
+                                    appData.dashboardPhotos[y] = arr.map(p =>
+                                        typeof p === 'string' ? (p ? { src: p } : '') : p
+                                    ).slice(0, 5);
+                                    while (appData.dashboardPhotos[y].length < 5) appData.dashboardPhotos[y].push('');
+                                });
+                            }
+                        }
+
+                        // Charger couleurs personnalisées si présentes
+                        if (data.customVarietyColors) {
+                            try {
+                                customVarietyColors = { ...customVarietyColors, ...data.customVarietyColors };
+                                saveCustomColors();
+                            } catch {}
+                        }
+
+                        // Charger la liste des mois affichés si présente
+                        if (Array.isArray(data.displayedMonths)) {
+                            displayedMonths = [...new Set([...(displayedMonths || []), ...data.displayedMonths])];
+                            saveDisplayedMonths();
                         }
                         
                         saveData();
@@ -3912,8 +3937,14 @@
                     maxPhotoSize: 15,
                     autoBackup: false
                 },
-                dashboardPhotos: ['', '', '', '', '']
+                // Structure par année pour les 5 photos, avec slots objets { src, date? }
+                dashboardPhotos: {}
             };
+            // Réinitialiser les états externes à appData
+            displayedMonths = [];
+            saveDisplayedMonths();
+            customVarietyColors = {};
+            saveCustomColors();
             
             // Vider le localStorage
             localStorage.removeItem('mushroomHarvestData');
